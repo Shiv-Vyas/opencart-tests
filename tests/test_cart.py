@@ -2,12 +2,9 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
-import os
-
-BASE_URL = os.getenv("BASE_URL", "http://localhost:8080")
 
 def test_add_item_to_cart(driver):
-    driver.get(f"{BASE_URL}")
+    driver.get("http://localhost/opencart")
     wait = WebDriverWait(driver, 10)
     
     # Wait until all products are loaded

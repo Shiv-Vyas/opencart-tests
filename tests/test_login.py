@@ -1,15 +1,6 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import re
-import time
-import os
-
-BASE_URL = os.getenv("BASE_URL", "http://localhost:8080")
-
 def test_register_and_login(driver):
 	"""Register a new account, then log in with the same credentials and assert login success."""
-	driver.get(f"{BASE_URL}")
+	driver.get("http://localhost/opencart")
 	wait = WebDriverWait(driver, 10)
 
 	# Click 'My Account' on main page
@@ -24,7 +15,7 @@ def test_register_and_login(driver):
 	wait.until(EC.visibility_of_element_located((By.ID, "input-firstname"))).send_keys("TestFirst")
 	wait.until(EC.visibility_of_element_located((By.ID, "input-lastname"))).send_keys("TestLast")
 	import time
-	email = f"testuser{int(time.time())}@example.com"
+	email = f"testuser23432@example.com"
 	wait.until(EC.visibility_of_element_located((By.ID, "input-email"))).send_keys(email)
 	wait.until(EC.visibility_of_element_located((By.ID, "input-password"))).send_keys("TestPassword123!")
 
@@ -98,9 +89,13 @@ def test_register_and_login(driver):
 			break
 		time.sleep(0.5)
 	assert found_login, "Login success message not found in page source after waiting 10s"
-
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import re
+import time
 def test_register_new_account(driver):
-	driver.get(f"{BASE_URL}")
+	driver.get("http://localhost/opencart")
 	wait = WebDriverWait(driver, 10)
 
 	# Click 'My Account' on main page

@@ -1,17 +1,14 @@
-import pytest
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+
+import pytest
 
 @pytest.fixture
 def driver():
-    chrome_options = Options()
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-
-    driver = webdriver.Remote(
-        command_executor="http://localhost:4444/wd/hub",
-        options=chrome_options
-    )
-
+    service = Service(ChromeDriverManager().install())
+    options = webdriver.ChromeOptions()
+    # options.add_argument("--headless")  # if you want headless
+    driver = webdriver.Chrome(service=service, options=options)
     yield driver
     driver.quit()
