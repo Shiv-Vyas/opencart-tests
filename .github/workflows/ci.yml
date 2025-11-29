@@ -11,29 +11,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # 1️⃣ Checkout repo
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    # 2️⃣ Set up PHP (for serving OpenCart)
     - name: Set up PHP
       uses: shivammathur/setup-php@v2
       with:
         php-version: 8.2
         extensions: mysqli, zip, gd
 
-    # 3️⃣ Set up Python
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: 3.11
 
-    # 4️⃣ Install Python dependencies
-    - name: Install dependencies
+    - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    
+
     - name: Install Chrome
       run: |
         sudo apt update
@@ -41,28 +37,32 @@ jobs:
         wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
         sudo apt install -y ./google-chrome-stable_current_amd64.deb
 
-    # 5️⃣ Download and prepare OpenCart
     - name: Download OpenCart
       run: |
         curl -Lo opencart.zip https://github.com/opencart/opencart/archive/refs/tags/3.0.4.1.zip
         unzip opencart.zip -d opencart
+
         mkdir -p opencart_root
-        mv opencart/opencart-3.0.4.1/upload/* opencart_root/
+
+        # FIX: correct extraction path for this release
+        mv opencart/opencart-3.0.4.1/opencart-3.0.4.1/upload/* opencart_root/
+
         mkdir -p opencart_root/system/storage
 
-    # 6️⃣ Start PHP built-in server
     - name: Start OpenCart server
       run: |
-        php -S localhost:8080 -t opencart_root > server.log 2>&1 &
-        sleep 10  # give server time to start
+        php -S 0.0.0.0:8080 -t opencart_root > server.log 2>&1 &
+        sleep 10
 
-    # 7️⃣ Start Selenium (using Docker container)
     - name: Start Selenium container
       run: |
-        docker run -d -p 4444:4444 --name selenium selenium/standalone-chrome:latest
+        docker run -d --name selenium \
+          --net=host \
+          selenium/standalone-chrome:latest
         sleep 5
 
-    # 8️⃣ Run tests
     - name: Run Selenium tests
+      env:
+        BASE_URL: "http://localhost:8080"
       run: |
         pytest tests --maxfail=1 --disable-warnings -v

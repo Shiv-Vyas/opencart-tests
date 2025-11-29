@@ -1,6 +1,13 @@
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import os
+
+BASE_URL = os.getenv("BASE_URL", "http://localhost:8080")
+
 def test_apply_invalid_discount_code(driver):
 	"""Add a product, go to View Cart, apply an invalid coupon code, and assert error message."""
-	driver.get("http://opencart:80/")
+	driver.get(f"{BASE_URL}")
 	wait = WebDriverWait(driver, 10)
 
 	# Wait until products are loaded and pick the first product
@@ -79,6 +86,3 @@ def test_apply_invalid_discount_code(driver):
 	# Wait for success message
 	WebDriverWait(driver, 10).until(lambda d: "Warning: Coupon is either invalid, expired or reached its usage limit!" in d.page_source)
 	assert "Warning: Coupon is either invalid, expired or reached its usage limit!" in driver.page_source
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
