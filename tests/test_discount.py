@@ -86,7 +86,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 def test_apply_valid_discount_with_10percent(driver):
 	"""Add a product, go to View Cart, apply coupon code 10PERCENT, and assert success."""
-	driver.get("http://localhost/opencart")
+    driver.get("http://host.docker.internal:8080")
 	wait = WebDriverWait(driver, 10)
 
 	# Wait until products are loaded and pick the first product

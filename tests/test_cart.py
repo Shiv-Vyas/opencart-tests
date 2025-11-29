@@ -4,7 +4,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
 
 def test_add_item_to_cart(driver):
-    driver.get("http://localhost/opencart")
+    driver.get("http://host.docker.internal:8080")
     wait = WebDriverWait(driver, 10)
     
     # Wait until all products are loaded

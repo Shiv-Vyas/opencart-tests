@@ -1,6 +1,6 @@
 def test_register_and_login(driver):
 	"""Register a new account, then log in with the same credentials and assert login success."""
-	driver.get("http://localhost/opencart")
+    driver.get("http://host.docker.internal:8080")
 	wait = WebDriverWait(driver, 10)
 
 	# Click 'My Account' on main page
