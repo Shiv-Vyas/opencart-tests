@@ -37,7 +37,7 @@ jobs:
     # 5️⃣ Download and prepare OpenCart
     - name: Download OpenCart
       run: |
-        curl -Lo opencart.zip https://github.com/opencart/opencart/releases/latest/download/opencart.zip
+        curl -Lo opencart.zip https://github.com/opencart/opencart/archive/refs/tags/3.0.4.1.zip
         unzip opencart.zip -d opencart
         mv opencart/upload/* opencart_root/
         # Copy storage folder config if needed
