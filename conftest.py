@@ -5,9 +5,11 @@ from webdriver_manager.chrome import ChromeDriverManager
 
 @pytest.fixture
 def driver():
-    driver = webdriver.Remote(
-        command_executor='http://localhost:4444/wd/hub',
-        desired_capabilities=DesiredCapabilities.CHROME
-    )
+    service = Service(ChromeDriverManager().install())
+    options = webdriver.ChromeOptions()
+    # options.add_argument("--headless")  # uncomment if you want headless mode
+
+    driver = webdriver.Chrome(service=service, options=options)
+    driver.maximize_window()
     yield driver
     driver.quit()
