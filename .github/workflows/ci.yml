@@ -39,8 +39,8 @@ jobs:
       run: |
         curl -Lo opencart.zip https://github.com/opencart/opencart/archive/refs/tags/3.0.4.1.zip
         unzip opencart.zip -d opencart
+        mkdir -p opencart_root
         mv opencart/opencart-3.0.4.1/upload/* opencart_root/
-        # Copy storage folder config if needed
         mkdir -p opencart_root/system/storage
 
     # 6️⃣ Start PHP built-in server
