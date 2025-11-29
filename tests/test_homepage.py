@@ -4,7 +4,7 @@ from selenium.common.exceptions import TimeoutException
 
 
 def test_homepage_loads(driver):
-    driver.get("https://demo.opencart.com/")
+    driver.get("http://opencart:80/")
     # Wait for the site to finish any interim page (e.g. Cloudflare) and load the actual store
     try:
         WebDriverWait(driver, 30).until(EC.title_contains("Your Store"))

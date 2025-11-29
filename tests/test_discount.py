@@ -1,6 +1,6 @@
 def test_apply_invalid_discount_code(driver):
 	"""Add a product, go to View Cart, apply an invalid coupon code, and assert error message."""
-	driver.get("http://localhost/opencart")
+	driver.get("http://opencart:80/")
 	wait = WebDriverWait(driver, 10)
 
 	# Wait until products are loaded and pick the first product
