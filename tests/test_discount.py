@@ -85,15 +85,14 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 def test_apply_valid_discount_with_10percent(driver):
-	"""Add a product, go to View Cart, apply coupon code 10PERCENT, and assert success."""
     driver.get("http://host.docker.internal:8080")
-	wait = WebDriverWait(driver, 10)
+    wait = WebDriverWait(driver, 10)
 
-	# Wait until products are loaded and pick the first product
-	products = wait.until(
-		EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".product-thumb"))
-	)
-	first_product = products[0]
+    # Wait until products are loaded and pick the first product
+    products = wait.until(
+        EC.presence_of_all_elements_located((By.CSS_SELECTOR, ".product-thumb"))
+    )
+    first_product = products[0]
 
 	# Find the Add to Cart button (handle different attributes)
 	try:
