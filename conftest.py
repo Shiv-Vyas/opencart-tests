@@ -1,21 +1,17 @@
+import os
 import pytest
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.remote.webdriver import WebDriver
+
+BASE_URL = os.getenv("BASE_URL", "http://localhost:8080")
+SELENIUM_URL = os.getenv("SELENIUM_URL", "http://localhost:4444/wd/hub")
 
 @pytest.fixture
-def driver():
-    options = webdriver.ChromeOptions()
-    options.add_argument("--headless")        # Run headless
-    options.add_argument("--no-sandbox")      # Required in many CI environments
-    options.add_argument("--disable-dev-shm-usage")  # Avoids /dev/shm issues in CI
-
-    # Create the Chrome WebDriver
-    driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()),
-        options=options
+def driver() -> WebDriver:
+    driver = webdriver.Remote(
+        command_executor=SELENIUM_URL,
+        options=webdriver.ChromeOptions()
     )
-    yield driver  # Provide the fixture value to the test
-
-    # Quit after the test completes
+    yield driver
     driver.quit()

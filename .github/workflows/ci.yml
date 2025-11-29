@@ -9,6 +9,11 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      selenium:
+        image: selenium/standalone-chrome:latest
+        ports:
+          - 4444:4444
 
     steps:
     - name: Checkout repository
@@ -30,23 +35,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Install Chrome
-      run: |
-        sudo apt update
-        sudo apt install -y wget unzip fontconfig libnss3 libxss1 libappindicator3-1 libatk-bridge2.0-0 libgtk-3-0
-        wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-        sudo apt install -y ./google-chrome-stable_current_amd64.deb
-
     - name: Download OpenCart
       run: |
         curl -Lo opencart.zip https://github.com/opencart/opencart/archive/refs/tags/3.0.4.1.zip
-        unzip opencart.zip -d opencart
-
+        unzip opencart.zip
         mkdir -p opencart_root
-
-        # FIX: correct extraction path for this release
-        mv opencart/opencart-3.0.4.1/upload opencart_root
-
+        mv opencart-3.0.4.1/upload/* opencart_root/
         mkdir -p opencart_root/system/storage
 
     - name: Start OpenCart server
@@ -54,15 +48,9 @@ jobs:
         php -S 0.0.0.0:8080 -t opencart_root > server.log 2>&1 &
         sleep 10
 
-    - name: Start Selenium container
-      run: |
-        docker run -d --name selenium \
-          --net=host \
-          selenium/standalone-chrome:latest
-        sleep 5
-
     - name: Run Selenium tests
       env:
-        BASE_URL: "http://localhost:8080"
+        BASE_URL: "http://host.docker.internal:8080"
+        SELENIUM_URL: "http://localhost:4444/wd/hub"
       run: |
         pytest tests --maxfail=1 --disable-warnings -v
