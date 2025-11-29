@@ -45,7 +45,7 @@ jobs:
         mkdir -p opencart_root
 
         # FIX: correct extraction path for this release
-        mv opencart/opencart-3.0.4.1/opencart-3.0.4.1/upload/* opencart_root/
+        mv opencart/opencart-3.0.4.1/upload opencart_root
 
         mkdir -p opencart_root/system/storage
 
